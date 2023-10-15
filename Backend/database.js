@@ -78,6 +78,24 @@ export async function createMessage(first_name, last_name, email, message) {
     })
 }
 
+// Query to insert data recieved from transaction
+export async function createTransaction(purchasedNftIds, signerAddress, totalETH, time, hash) {
+    const [result] = await pool.query(`
+    INSERT INTO order_table (purchasedNftIds, signerAddress, totalETH, time, hash)
+    VALUES (?, ?, ?, ?, ?)
+    `, [purchasedNftIds, signerAddress, totalETH, time, hash],
+    (err) => {
+        if (err) {
+            console.log(err)
+        }
+        else {
+            res.send("Values Inserted")
+        }
+    }
+    )
+}
+
+// Query to search the items from the database based on requests recieved from frontend
 export async function searchData(title) {
     try {
         const [result] = await pool.query(`
@@ -90,10 +108,3 @@ export async function searchData(title) {
         return null
     }
 }
-
-
-// const result = await createMessage('test', 'test', 'test@gmail.com', 'test')
-// console.log(result)
-
-// const nft = await getNft(2)
-// console.log(nft)

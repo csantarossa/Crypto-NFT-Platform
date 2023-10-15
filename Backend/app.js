@@ -54,6 +54,13 @@ app.post("/contact", async (req, res) => {
     res.status(201).send(msg)
 })
 
+// API endpoint for insert the transaction details from the purchase
+app.post("/transaction", async(req, res) => {
+    const {purchasedNftIds, signerAddress, totalETH, time, hash} = req.body
+    const transaction = await createTransaction(purchasedNftIds, signerAddress, totalETH, time, hash)
+    res.status(201).send(transaction)
+})
+
 // Global Error Handler. function parameters must start with err
 app.use((err, req, res, next) => {
     console.error(err.stack)
